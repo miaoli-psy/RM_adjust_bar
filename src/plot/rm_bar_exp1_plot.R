@@ -494,6 +494,93 @@ my_plot3 <-  ggplot() +
 
 my_plot3
 
+
+my_plot3.0 <-  ggplot() +
+  
+  geom_point(
+    data = data_across_pp3,
+    aes(
+      x = number_deviation,
+      y = width_dv_mean,
+      color = as.factor(number_deviation),
+      size = n
+    ),
+    position = position_dodge(0.2),
+    stat = "identity",
+    alpha = 0.5
+  ) +
+  
+  geom_errorbar(
+    data = data_across_pp3,
+    aes(
+      x = number_deviation,
+      y = width_dv_mean,
+      ymin = width_dv_mean - width_dv_SEM,
+      ymax = width_dv_mean + width_dv_SEM
+    ),
+    
+    size  = 1.0,
+    width = .00,
+    alpha = 0.5,
+    color = "black",
+    position = position_dodge(0.2)
+  ) +
+  
+  
+  geom_hline(yintercept = 0, linetype = "dashed") +
+  
+  labs(y = "Width deviation (°)", x = "Deviation (number task)") +
+  
+  scale_x_continuous(breaks = c( -3, -2, -1, 0, 1, 2, 3), 
+                     labels = c("-3", "-2", "-1", "0", "1", "2", "3"), limits = c(-4.5, 4.5))+
+  
+  
+  theme(
+    axis.title.x = element_text(
+      color = "black",
+      size = 14,
+      face = "bold"
+    ),
+    axis.title.y = element_text(
+      color = "black",
+      size = 14,
+      face = "bold"
+    ),
+    panel.border = element_blank(),
+    # remove panel grid lines
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    # remove panel background
+    panel.background = element_blank(),
+    # add axis line
+    axis.line = element_line(colour = "grey"),
+    # x,y axis tick labels
+    axis.text.x = element_text(size = 12, face = "bold"),
+    axis.text.y = element_text(size = 12, face = "bold"),
+    # legend size
+    legend.title = element_text(size = 12, face = "bold"),
+    legend.text = element_text(size = 10),
+    # facet wrap title
+    strip.text.x = element_text(size = 12, face = "bold")
+  ) +
+  
+  facet_wrap( ~ correct_num + correct_width,
+              labeller = labeller(
+                correct_num =
+                  c("3" = "set size 3",
+                    "4" = "set size 4",
+                    "5" = "set size 5"),
+                correct_width =
+                  c(
+                    "0.1" = "actual width 0.1",
+                    "0.25" = "actual width 0.25",
+                    "0.4" = "actual width 0.4"
+                  )
+              ))
+
+
+my_plot3.0
+
 # -------------Deviation spacing - Deviation Num --------
 
 my_plot3.1 <-  ggplot() +
@@ -597,5 +684,88 @@ my_plot3.1
 
 
 
+my_plot3.2 <-  ggplot() +
+  
+  geom_point(
+    data = data_across_pp3,
+    aes(
+      x = number_deviation,
+      y = spacing_dv_mean,
+      color = as.factor(number_deviation),
+      size = n
+    ),
+    position = position_dodge(0.2),
+    stat = "identity",
+    alpha = 0.5
+  ) +
+  
+  geom_errorbar(
+    data = data_across_pp3,
+    aes(
+      x = number_deviation,
+      y = spacing_dv_mean,
+      ymin = spacing_dv_mean - spacing_dv_SEM,
+      ymax = spacing_dv_mean + spacing_dv_SEM,
+      group = correct_width
+    ),
+    
+    size  = 1.2,
+    width = .00,
+    alpha = 0.5,
+    position = position_dodge(0.2)
+  ) +
+  
+  geom_hline(yintercept = 0, linetype = "dashed") +
+  
+  labs(y = "Spacing deviation (°)", x = "Deviation (number task)") +
+  
+  scale_x_continuous(breaks = c(-3, -2, -1, 0, 1, 2, 3), 
+                     labels = c("-3", "-2", "-1", "0", "1", "2", "3"), limits = c(-4.5, 4.5))+
+  
+  
+  theme(
+    axis.title.x = element_text(
+      color = "black",
+      size = 14,
+      face = "bold"
+    ),
+    axis.title.y = element_text(
+      color = "black",
+      size = 14,
+      face = "bold"
+    ),
+    panel.border = element_blank(),
+    # remove panel grid lines
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    # remove panel background
+    panel.background = element_blank(),
+    # add axis line
+    axis.line = element_line(colour = "grey"),
+    # x,y axis tick labels
+    axis.text.x = element_text(size = 12, face = "bold"),
+    axis.text.y = element_text(size = 12, face = "bold"),
+    # legend size
+    legend.title = element_text(size = 12, face = "bold"),
+    legend.text = element_text(size = 10),
+    # facet wrap title
+    strip.text.x = element_text(size = 12, face = "bold")
+  ) +
+  
+  facet_wrap( ~ correct_num + correct_width,
+              labeller = labeller(
+                correct_num =
+                  c("3" = "set size 3",
+                    "4" = "set size 4",
+                    "5" = "set size 5"),
+                correct_width =
+                  c(
+                    "0.1" = "actual width 0.1",
+                    "0.25" = "actual width 0.25",
+                    "0.4" = "actual width 0.4"
+                  )
+              ))
+
+my_plot3.2
 
 
