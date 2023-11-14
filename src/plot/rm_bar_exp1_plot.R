@@ -367,6 +367,11 @@ my_data$predicted_width <-
 
 my_data$width_deviation_p <- my_data$response_width - my_data$predicted_width
 
+# ----add new y-axis: width dv in percentage of line width----
+my_data$correct_width_all <- my_data$correct_num * my_data$correct_width
+my_data$reported_width_all <- my_data$response_width * my_data$response_num
+my_data$dv_in_percentage_width <- (my_data$reported_width_all - my_data$correct_width_all) / my_data$correct_width_all * my_data$correct_num 
+
 
 data_by_pp3 <- my_data %>%
   group_by(correct_num, correct_width, number_deviation, subID) %>%
@@ -377,6 +382,8 @@ data_by_pp3 <- my_data %>%
     spacing_deviation_sd = sd(space_deviation),
     width_deviation_p_mean = mean(width_deviation_p),
     width_deviation_p_sd = sd(width_deviation_p),
+    dv_in_percentage_width_mean = mean(dv_in_percentage_width),
+    dv_in_percentage_width_sd = sd(dv_in_percentage_width),
     n = n()
   ) %>%
   mutate(
@@ -385,7 +392,9 @@ data_by_pp3 <- my_data %>%
     spacing_deviation_SEM = spacing_deviation_sd / sqrt(n),
     spacing_deviation_CI = spacing_deviation_SEM * qt((1 - 0.05) / 2 + .5, n - 1),
     width_deviation_p_SEM = width_deviation_p_sd / sqrt(n),
-    width_deviation_p_CI = width_deviation_p_SEM * qt((1 - 0.05) / 2 + .5, n - 1)
+    width_deviation_p_CI = width_deviation_p_SEM * qt((1 - 0.05) / 2 + .5, n - 1),
+    dv_in_percentage_width_SEM = dv_in_percentage_width_sd / sqrt(n),
+    dv_in_percentage_width_CI = dv_in_percentage_width_SEM * qt((1 - 0.05) / 2 + .5, n - 1)
   )
 
 
@@ -398,6 +407,8 @@ data_across_pp3 <- data_by_pp3 %>%
     spacing_dv_sd = sd(spacing_deviation_mean),
     width_dv_p_mean = mean(width_deviation_p_mean),
     width_dv_p_sd = sd(width_deviation_p_mean),
+    width_dv_normalized_mean = mean(dv_in_percentage_width_mean),
+    width_dv_normalized_sd = sd(dv_in_percentage_width_mean),
     n = n()
   ) %>%
   mutate(
@@ -406,7 +417,9 @@ data_across_pp3 <- data_by_pp3 %>%
     spacing_dv_SEM = spacing_dv_sd / sqrt(n),
     spacing_dv_CI = spacing_dv_SEM * qt((1 - 0.05) / 2 + .5, n - 1),
     width_dv_p_SEM = width_dv_p_sd / sqrt(n),
-    width_dv_p_CI = width_dv_p_SEM * qt((1 - 0.05) / 2 + .5, n - 1)
+    width_dv_p_CI = width_dv_p_SEM * qt((1 - 0.05) / 2 + .5, n - 1),
+    width_dv_normalized_SEM = width_dv_normalized_sd / sqrt(n),
+    width_dv_normalized_CI = width_dv_normalized_SEM * qt((1 - 0.05) / 2 + .5, n - 1)
   )
 
 data_by_pp3$correct_width <- as.factor(data_by_pp3$correct_width)
@@ -682,6 +695,95 @@ my_plot3.0.0 <-  ggplot() +
 
 
 my_plot3.0.0
+
+
+# -----------Width deviation in percentage of line width-----
+
+my_plot3.0.1 <-  ggplot() +
+  
+  geom_point(
+    data = data_across_pp3,
+    aes(
+      x = number_deviation,
+      y = width_dv_normalized_mean,
+      color = as.factor(number_deviation),
+      size = n
+    ),
+    position = position_dodge(0.2),
+    stat = "identity",
+    alpha = 0.5,
+  ) +
+  
+  geom_errorbar(
+    data = data_across_pp3,
+    aes(
+      x = number_deviation,
+      y = width_dv_normalized_mean,
+      ymin = width_dv_normalized_mean - width_dv_normalized_SEM,
+      ymax = width_dv_normalized_mean + width_dv_normalized_SEM
+    ),
+    
+    size  = 1.0,
+    width = .00,
+    alpha = 0.5,
+    color = "black",
+    position = position_dodge(0.2)
+  ) +
+  
+  
+  geom_hline(yintercept = 0, linetype = "dashed") +
+  
+  labs(y = "Width deviation in percentage of line width", x = "Deviation (number task)") +
+  
+  scale_x_continuous(breaks = c( -3, -2, -1, 0, 1, 2, 3), 
+                     labels = c("-3", "-2", "-1", "0", "1", "2", "3"), limits = c(-4.5, 4.5))+
+  
+  
+  theme(
+    axis.title.x = element_text(
+      color = "black",
+      size = 14,
+      face = "bold"
+    ),
+    axis.title.y = element_text(
+      color = "black",
+      size = 14,
+      face = "bold"
+    ),
+    panel.border = element_blank(),
+    # remove panel grid lines
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    # remove panel background
+    panel.background = element_blank(),
+    # add axis line
+    axis.line = element_line(colour = "grey"),
+    # x,y axis tick labels
+    axis.text.x = element_text(size = 12, face = "bold"),
+    axis.text.y = element_text(size = 12, face = "bold"),
+    # legend size
+    legend.title = element_text(size = 12, face = "bold"),
+    legend.text = element_text(size = 10),
+    # facet wrap title
+    strip.text.x = element_text(size = 12, face = "bold")
+  ) +
+  
+  facet_wrap( ~ correct_num + correct_width,
+              labeller = labeller(
+                correct_num =
+                  c("3" = "set size 3",
+                    "4" = "set size 4",
+                    "5" = "set size 5"),
+                correct_width =
+                  c(
+                    "0.1" = "actual width 0.1",
+                    "0.25" = "actual width 0.25",
+                    "0.4" = "actual width 0.4"
+                  )
+              ))
+
+
+my_plot3.0.1
 
 
 # -------------Deviation spacing - Deviation Num --------
