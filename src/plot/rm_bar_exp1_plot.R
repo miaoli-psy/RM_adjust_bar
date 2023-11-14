@@ -699,10 +699,12 @@ my_plot3.0.0
 
 # -----------Width deviation in percentage of line width-----
 
+data_across_pp3_subset <- subset(data_across_pp3, number_deviation %in% c(-2, -1, 0, 1)) 
+
 my_plot3.0.1 <-  ggplot() +
   
   geom_point(
-    data = data_across_pp3,
+    data = data_across_pp3_subset,
     aes(
       x = number_deviation,
       y = width_dv_normalized_mean,
@@ -715,7 +717,7 @@ my_plot3.0.1 <-  ggplot() +
   ) +
   
   geom_errorbar(
-    data = data_across_pp3,
+    data = data_across_pp3_subset,
     aes(
       x = number_deviation,
       y = width_dv_normalized_mean,
@@ -735,8 +737,8 @@ my_plot3.0.1 <-  ggplot() +
   
   labs(y = "Width deviation in percentage of line width", x = "Deviation (number task)") +
   
-  scale_x_continuous(breaks = c( -3, -2, -1, 0, 1, 2, 3), 
-                     labels = c("-3", "-2", "-1", "0", "1", "2", "3"), limits = c(-4.5, 4.5))+
+  scale_x_continuous(breaks = c(-2, -1, 0, 1), 
+                     labels = c("-2", "-1", "0", "1"), limits = c(-2.5, 1.5))+
   
   
   theme(
