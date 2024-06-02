@@ -86,7 +86,7 @@ p3
 
 # ---Deviation - set size- separate for spacing----------
 
-data_by_pp <- my_data %>%
+my_data %>%
   group_by(correct_num, correct_width, subID, spacing) %>%
   dplyr::summarise(
     number_deviation_mean = mean(number_deviation),
