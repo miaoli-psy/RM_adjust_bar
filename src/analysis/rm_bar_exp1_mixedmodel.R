@@ -186,4 +186,3 @@ emm <- emmeans::emmeans(sd.model.lmm.full, specs = pairwise ~ number_deviation |
 # pairwise comparisons+
 pairs <- emmeans::contrast(emm, method = "tukey")
 pairs_summary <- summary(pairs)
-
