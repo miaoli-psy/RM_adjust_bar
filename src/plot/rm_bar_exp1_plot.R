@@ -86,7 +86,7 @@ p3
 
 # ---Deviation - set size- separate for spacing----------
 
-my_data %>%
+data_by_pp <-my_data %>%
   group_by(correct_num, correct_width, subID, spacing) %>%
   dplyr::summarise(
     number_deviation_mean = mean(number_deviation),
@@ -1001,6 +1001,7 @@ my_plot1.3 <-  ggplot() +
   )
 
 
+
 my_plot1.3
 
 # ---Deviation - set size--clasp spacing---------------
@@ -1277,7 +1278,7 @@ my_plot2.2 <-  ggplot() +
   
   geom_hline(yintercept = 0, linetype = "dashed") +
   
-  labs(y = "Deviation score (DS)", x = "Set size") +
+  labs(y = "Deviation score (DS +/- 95% CI) ", x = "Set size") +
   
   scale_x_continuous(breaks = c(3, 4, 5), 
                      labels = c("3", "4", "5"), limits = c(2.5, 5.5))+
@@ -1287,12 +1288,12 @@ my_plot2.2 <-  ggplot() +
   theme(
     axis.title.x = element_text(
       color = "black",
-      size = 16,
+      size = 20,
       face = "bold"
     ),
     axis.title.y = element_text(
       color = "black",
-      size = 16,
+      size = 20,
       face = "bold"
     ),
     panel.border = element_blank(),
@@ -1304,13 +1305,13 @@ my_plot2.2 <-  ggplot() +
     # add axis line
     axis.line = element_line(colour = "grey"),
     # x,y axis tick labels
-    axis.text.x = element_text(size = 14, face = "bold"),
-    axis.text.y = element_text(size = 14, face = "bold"),
+    axis.text.x = element_text(size = 16, face = "bold"),
+    axis.text.y = element_text(size = 16, face = "bold"),
     # legend size
-    legend.title = element_text(size = 14, face = "bold"),
+    legend.title = element_text(size = 20, face = "bold"),
     legend.text = element_text(size = 10),
     # facet wrap title
-    strip.text.x = element_text(size = 14, face = "bold")
+    strip.text.x = element_text(size = 20, face = "bold")
   )   +
   
   facet_wrap(~ correct_width, labeller = labeller(
@@ -1443,11 +1444,11 @@ my_plot2.2.0
 # save figures
 # ggsave(file = "2.0.svg", plot = my_plot2.0, width = 7.17, height = 3.79, units = "in")
 # ggsave(file = "2.1.svg", plot = my_plot2.1, width = 7.17, height = 3.79, units = "in")
-# ggsave(file = "2.2.svg", plot = my_plot2.2, width = 7.17, height = 3.79, units = "in")
+ggsave(file = "2.2.svg", plot = my_plot2.2, width = 7.17, height = 3.79, units = "in")
 
 # ggsave(file = "2.0.png", plot = my_plot2.0, width = 7.17, height = 3.79, units = "in")
 # ggsave(file = "2.1.png", plot = my_plot2.1, width = 7.17, height = 3.79, units = "in")
-ggsave(file = "2.2.png", plot = my_plot2.2, width = 7.17, height = 3.79, units = "in")
+# ggsave(file = "2.2.png", plot = my_plot2.2, width = 7.17, height = 3.79, units = "in")
 # ggsave(file = "2.2.0.png", plot = my_plot2.2.0, width = 7.17, height = 3.79, units = "in")
 # -------------Width dv - set size-------------------
 
@@ -1976,13 +1977,13 @@ my_plot3.2.0 <-  ggplot() +
       x = correct_num,
       y = width_dv_mean,
       group = RM,
-      color = RM,
-      size = n
+      color = RM
     ),
     position = position_dodge(0.5),
     stat = "identity",
     alpha = 0.8,
-    show.legend = FALSE
+    show.legend = FALSE,
+    size = 4
   ) +
   
   geom_errorbar(
@@ -2003,31 +2004,31 @@ my_plot3.2.0 <-  ggplot() +
     position = position_dodge(0.5)
   ) +
   
-  geom_point(
-    data = data_by_pp3,
-    aes(
-      x = correct_num,
-      y = width_deviation_mean,
-      fill = RM,
-      group = RM,
-      color = RM,
-      size = n
-    ),
-    alpha = 0.0,
-    position = position_jitterdodge(),
-    show.legend = FALSE,
-    
-    
-  )+
+  # geom_point(
+  #   data = data_by_pp3,
+  #   aes(
+  #     x = correct_num,
+  #     y = width_deviation_mean,
+  #     fill = RM,
+  #     group = RM,
+  #     color = RM,
+  #     size = n
+  #   ),
+  #   alpha = 0.0,
+  #   position = position_jitterdodge(),
+  #   show.legend = FALSE,
+  #   
+  #   
+  # )+
   
   geom_hline(yintercept = 0, linetype = "dashed") +
   
-  labs(y = "Width deviation (°)", x = "Set size") +
+  labs(y = "Width deviation (° +/- 95% CI)", x = "Set size") +
   
   scale_x_continuous(breaks = c(3, 4, 5), 
                      labels = c("3", "4", "5"), limits = c(2.5, 5.5))+
   
-  scale_y_continuous(limits = c(-0.2, 0.2)) +
+  scale_y_continuous(limits = c(-0.12, 0.1)) +
   
   scale_color_manual(
     labels = c( "RM trials (DS = -1, -2 -3)", "Correct trials (DS = 0)"),
@@ -2038,12 +2039,12 @@ my_plot3.2.0 <-  ggplot() +
   theme(
     axis.title.x = element_text(
       color = "black",
-      size = 16,
+      size = 20,
       face = "bold"
     ),
     axis.title.y = element_text(
       color = "black",
-      size = 16,
+      size = 20,
       face = "bold"
     ),
     panel.border = element_blank(),
@@ -2055,14 +2056,14 @@ my_plot3.2.0 <-  ggplot() +
     # add axis line
     axis.line = element_line(colour = "grey"),
     # x,y axis tick labels
-    axis.text.x = element_text(size = 14, face = "bold"),
-    axis.text.y = element_text(size = 14, face = "bold"),
+    axis.text.x = element_text(size = 16, face = "bold"),
+    axis.text.y = element_text(size = 16, face = "bold"),
     # legend size
-    legend.title = element_text(size = 14, face = "bold"),
-    legend.text = element_text(size = 12, face = "bold"),
+    legend.title = element_text(size = 20, face = "bold"),
+    legend.text = element_text(size = 10),
     # facet wrap title
-    strip.text.x = element_text(size = 14, face = "bold")
-  ) +
+    strip.text.x = element_text(size = 20, face = "bold")
+  )   +
   
   
   facet_wrap(~ correct_width, labeller = labeller(
@@ -2476,12 +2477,12 @@ my_plot3.4.0 <-  ggplot() +
   theme(
     axis.title.x = element_text(
       color = "black",
-      size = 14,
+      size = 16,
       face = "bold"
     ),
     axis.title.y = element_text(
       color = "black",
-      size = 14,
+      size = 16,
       face = "bold"
     ),
     panel.border = element_blank(),
@@ -2493,13 +2494,13 @@ my_plot3.4.0 <-  ggplot() +
     # add axis line
     axis.line = element_line(colour = "grey"),
     # x,y axis tick labels
-    axis.text.x = element_text(size = 12, face = "bold"),
-    axis.text.y = element_text(size = 12, face = "bold"),
+    axis.text.x = element_text(size = 20, face = "bold"),
+    axis.text.y = element_text(size = 20, face = "bold"),
     # legend size
-    legend.title = element_text(size = 12, face = "bold"),
+    legend.title = element_text(size = 20, face = "bold"),
     legend.text = element_text(size = 10, face = "bold"),
     # facet wrap title
-    strip.text.x = element_text(size = 12, face = "bold")
+    strip.text.x = element_text(size = 20, face = "bold")
   ) +
   
   
@@ -3523,7 +3524,7 @@ my_plot5.4 <-  ggplot() +
   
   geom_hline(yintercept = 0, linetype = "dashed") +
   
-  labs(y = "Spacing deviation (°)", x = "Set size") +
+  labs(y = "Spacing deviation (° +/- 95% CI)", x = "Set size") +
   
   scale_x_continuous(breaks = c(3, 4, 5), 
                      labels = c("3", "4", "5"), limits = c(2.5, 5.5))+
@@ -3541,12 +3542,12 @@ my_plot5.4 <-  ggplot() +
   theme(
     axis.title.x = element_text(
       color = "black",
-      size = 16,
+      size = 20,
       face = "bold"
     ),
     axis.title.y = element_text(
       color = "black",
-      size = 16,
+      size = 20,
       face = "bold"
     ),
     panel.border = element_blank(),
@@ -3558,13 +3559,13 @@ my_plot5.4 <-  ggplot() +
     # add axis line
     axis.line = element_line(colour = "grey"),
     # x,y axis tick labels
-    axis.text.x = element_text(size = 14, face = "bold"),
-    axis.text.y = element_text(size = 14, face = "bold"),
+    axis.text.x = element_text(size = 16, face = "bold"),
+    axis.text.y = element_text(size = 16, face = "bold"),
     # legend size
-    legend.title = element_text(size = 14, face = "bold"),
+    legend.title = element_text(size = 20, face = "bold"),
     legend.text = element_text(size = 12, face = "bold"),
     # facet wrap title
-    strip.text.x = element_text(size = 14, face = "bold")
+    strip.text.x = element_text(size = 20, face = "bold")
   ) +
   
   
@@ -3579,4 +3580,5 @@ my_plot5.4 <-  ggplot() +
 
 my_plot5.4
 
-ggsave(file = "5.4.svg", plot = my_plot5.4, width = 10, height = 4.6, units = "in")
+ggsave(file = "5.4.svg", plot = my_plot5.4, width = 10, height = 3.2, units = "in")
+

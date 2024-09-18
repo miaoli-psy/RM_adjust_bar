@@ -12,7 +12,8 @@ setwd("D:/OneDrive/projects/RM_adjust_bar/data/")
 my_data <- readxl::read_excel(file.choose()) # data_tilt.xlsx
 
 
-failed_list <- c("502", "507", "510", "513", "516", "517", "518")
+failed_list <- c("502", "505", "507", "510", "513", "516", "517", "518", "528")
+failed_list <- c("527", "525", "519", "530")
 
 my_data <- my_data %>%
   filter(!SubID %in% failed_list)
@@ -22,6 +23,7 @@ my_data <- my_data %>%
   filter(RM %in% c('RM', "Correct"))
 
 my_data$RM <- factor(my_data$RM , levels = c("RM", "Correct"))
+my_data$RM <- factor(my_data$RM , levels = c("RM", "Correct", "Overestimate"))
 
 
 # RM summary
@@ -49,7 +51,7 @@ p1
 
 
 # plot for either set size 3 or set size 4
-setsize = 3 
+setsize = 4 
 
 my_data <- my_data %>% 
   filter(correct_num == setsize)
@@ -513,8 +515,9 @@ my_plot2.1 <- ggplot() +
 my_plot2.1
 # some infer stats
 contrasts(threshold_results_by_pp$RM) <- matrix(c(-0.5, 0.5), ncol = 1)
+
 model <- lme4::lmer(
-  threshold ~ RM + oriented_line_location + (1|SubID), data = threshold_results_by_pp
+  threshold ~ RM * oriented_line_location + (1|SubID), data = threshold_results_by_pp
 )
 
 summary(model)
