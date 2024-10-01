@@ -12,8 +12,8 @@ setwd("D:/OneDrive/projects/RM_adjust_bar/data/")
 my_data <- readxl::read_excel(file.choose()) # data_tilt.xlsx
 
 
-failed_list <- c("502", "505", "507", "510", "513", "516", "517", "518", "528")
-failed_list <- c("527", "525", "519", "530")
+failed_list <- c("502", "507", "511", "516", "517", "518", "525")
+
 
 my_data <- my_data %>%
   filter(!SubID %in% failed_list)
